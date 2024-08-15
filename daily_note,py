@@ -1,0 +1,120 @@
+# Necessary Imports
+import requests     # For making the API calls
+import os           # For file creation and saving functionality
+from datetime import datetime  # Daily notes need to follow the date no?
+import pandas as pd # To format the gathered data (at least try)
+import chord_generator # Import constructed key and chord generator
+
+# API KEYS
+WEATHER_API_KEY = "4b1a6ebf5a0e9f3e6197c542169d12eb" # OpenWeather API
+TODAY = datetime.today().strftime('%m-%d')
+
+
+# API ENDPOINTS (URLS)
+WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?'
+
+# News Related API (Placeholder)
+# https://rapidapi.com/blog/rapidapi-featured-news-apis/
+
+# Music API's (Currently Top Charts, Hopeful for a way to get new releases???)
+GENIUS_ARTIST_CHART_URL = "https://genius-song-lyrics1.p.rapidapi.com/chart/artists/"
+GENIUS_ALBUM_CHART_URL = "https://genius-song-lyrics1.p.rapidapi.com/chart/albums/"
+
+# Get Weather function for a location
+def get_weather(location):
+    try:
+        params = {
+            'q': location,
+            'appid': WEATHER_API_KEY,
+            'units': 'imperial'  # 'imperial' units for Fahrenheit
+        }
+        response = requests.get(WEATHER_API_URL, params=params)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching weather data: {e}")
+        return None
+    
+# To be replaced with my own 'quotes database'
+def get_quote():
+    try:
+        response = requests.get('https://api.quotable.io/random')
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching quote: {e}")
+        return None
+
+# Create a markdown file to showcase gathered data
+def create_markdown(data, weather_data, chord_progression):
+
+    # Initialize Metadata
+    md_content = f"---\ntitle: '{TODAY} Dashboard'\ndate: '{TODAY}'\ntags: ['Blogs']\n---\n\n"
+
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    md_content += f"# Daily Dashboard for {date_str}\n\n"
+
+    if 'sf' in weather_data:
+        weather_to_markdown = weather_data['sf']
+        md_content += "## Weather in Sioux Falls\n"
+        md_content += f"Location: {weather_to_markdown['name']}\n"
+        md_content += f"Temperature: {weather_to_markdown['main']['temp']} °F\n"
+        md_content += f"Weather: {weather_to_markdown['weather'][0]['description'].capitalize()}\n\n"
+
+    if 'md' in weather_data:
+        weather_to_markdown = weather_data['md']
+        md_content += "## Weather in Madison\n"
+        md_content += f"Location: {weather_to_markdown['name']}\n"
+        md_content += f"Temperature: {weather_to_markdown['main']['temp']} °F\n"
+        md_content += f"Weather: {weather_to_markdown['weather'][0]['description'].capitalize()}\n\n"
+
+    if 'quote' in data and data['quote']:
+        md_content += "## Quote of the Day\n"
+        md_content += f"> {data['quote']['content']} - {data['quote']['author']}\n\n"
+        md_content += f"More on [{data['quote']['author']}](https://en.wikipedia.org/wiki/{data['quote']['author'].replace(' ', '_')})\n"
+
+    
+    md_content += "## Today in History\n"
+    md_content += f"https://www.history.com/this-day-in-history/{TODAY}"
+
+    md_content += f"# Practice and Research!\n"
+
+    # Include the chord progression
+    if chord_progression:
+        key, scale_type, progression = chord_progression
+        md_content += f"## Chord Progression\n"
+        md_content += f"Key: {key} {scale_type.capitalize()}\n"
+        md_content += f"Progression: {' - '.join(progression)}\n\n"
+
+    return md_content
+
+# Save File to the relevant Daily Notes Folder
+def save_markdown(content):
+    folder_path = './'
+    os.makedirs(folder_path, exist_ok=True)
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    file_path = os.path.join(folder_path, f"{date_str}.md")
+    with open(file_path, 'w') as file:
+        file.write(content)
+
+# Main Function
+def main():
+    # Actual Data Collection
+    data = {}
+    weather_data = {}
+    
+    weather_data['sf'] = get_weather('Sioux Falls,SD,USA')
+    weather_data['md'] = get_weather('Madison,SD,USA')
+
+    data['quote'] = get_quote()
+
+    # Get the chord progression
+    chord_progression = chord_generator.generate_chord_progression()
+
+    # Actual Markdown File Creation
+    markdown_content = create_markdown(data, weather_data, chord_progression)
+    print(markdown_content)  # Print the content to the console before saving
+    save_markdown(markdown_content)
+
+if __name__ == "__main__":
+    main()
