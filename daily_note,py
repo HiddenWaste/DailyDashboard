@@ -44,6 +44,14 @@ WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 GENIUS_ARTIST_CHART_URL = "https://genius-song-lyrics1.p.rapidapi.com/chart/artists/"
 GENIUS_ALBUM_CHART_URL = "https://genius-song-lyrics1.p.rapidapi.com/chart/albums/"
 
+# Chart Data
+GENIUS_CHARTS = {
+    'artists': GENIUS_ARTIST_CHART_URL,
+    'albums': GENIUS_ALBUM_CHART_URL
+}
+
+
+
 # Get Weather function for a location
 def get_weather(location):
     try:

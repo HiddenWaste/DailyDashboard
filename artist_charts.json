@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Post Malone",
+        "header_image_url": "https://images.genius.com/1cc70a5e8d2d4c7a16635170b2d8cac1.1000x563x1.jpg",
+        "url": "https://genius.com/artists/Post-malone"
+    },
+    {
+        "name": "Lady Gaga & Bruno Mars",
+        "header_image_url": "https://images.genius.com/ff683073906828932f2d84ef0813c59a.1000x500x1.jpg",
+        "url": "https://genius.com/artists/Lady-gaga-and-bruno-mars"
+    },
+    {
+        "name": "Eminem",
+        "header_image_url": "https://images.genius.com/7879bf220b8614a7fe4617006f132a92.1000x391x1.png",
+        "url": "https://genius.com/artists/Eminem"
+    },
+    {
+        "name": "Hozier",
+        "header_image_url": "https://images.genius.com/1d64c0e97aa12457fa57d9e57bff9728.1000x333x1.jpg",
+        "url": "https://genius.com/artists/Hozier"
+    },
+    {
+        "name": "Taylor Swift",
+        "header_image_url": "https://images.genius.com/1290896984554842b40f2450be157203.1000x333x1.jpg",
+        "url": "https://genius.com/artists/Taylor-swift"
+    },
+    {
+        "name": "LISA",
+        "header_image_url": "https://images.genius.com/73b7e57f6b1502dd7baf86fe722a66dd.1000x165x1.jpg",
+        "url": "https://genius.com/artists/Lisa"
+    },
+    {
+        "name": "AYLIVA",
+        "header_image_url": "https://images.genius.com/3e4488d6b6a9b52fa5d070dc6864e3d7.532x640x1.jpg",
+        "url": "https://genius.com/artists/Ayliva"
+    }
+]
