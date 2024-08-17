@@ -1,0 +1,181 @@
+{
+    "chart_items": [
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/1507735",
+                "header_image_url": "https://images.genius.com/e5afba664f84f0cadba65e3231dd57c7.1000x495x1.png",
+                "id": 1507735,
+                "image_url": "https://images.genius.com/086f5809e96b133dd536982629e5844b.1000x1000x1.png",
+                "index_character": "g",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "name": "Genius Romanizations",
+                "slug": "Genius-romanizations",
+                "url": "https://genius.com/artists/Genius-romanizations"
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/196943",
+                "header_image_url": "https://images.genius.com/e5afba664f84f0cadba65e3231dd57c7.1000x495x1.png",
+                "id": 196943,
+                "image_url": "https://images.genius.com/de32245e4abcb8be6c5d15aace40d53e.1000x1000x1.png",
+                "index_character": "g",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "name": "Genius English Translations",
+                "slug": "Genius-english-translations",
+                "url": "https://genius.com/artists/Genius-english-translations"
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/45",
+                "header_image_url": "https://images.genius.com/7879bf220b8614a7fe4617006f132a92.1000x391x1.png",
+                "id": 45,
+                "image_url": "https://images.genius.com/37f958ab28031af87d13b5d224749878.533x533x1.jpg",
+                "index_character": "e",
+                "is_meme_verified": true,
+                "is_verified": true,
+                "name": "Eminem",
+                "slug": "Eminem",
+                "url": "https://genius.com/artists/Eminem",
+                "iq": 275376
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/1177",
+                "header_image_url": "https://images.genius.com/1290896984554842b40f2450be157203.1000x333x1.jpg",
+                "id": 1177,
+                "image_url": "https://images.genius.com/df4a816f593b08bc8a361ad58a848640.1000x1000x1.jpg",
+                "index_character": "t",
+                "is_meme_verified": true,
+                "is_verified": true,
+                "name": "Taylor Swift",
+                "slug": "Taylor-swift",
+                "url": "https://genius.com/artists/Taylor-swift",
+                "iq": 1544
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/326362",
+                "header_image_url": "https://images.genius.com/1cc70a5e8d2d4c7a16635170b2d8cac1.1000x563x1.jpg",
+                "id": 326362,
+                "image_url": "https://images.genius.com/e4627140404ae42d185c85c2c2c9c339.960x960x1.jpg",
+                "index_character": "p",
+                "is_meme_verified": true,
+                "is_verified": true,
+                "name": "Post Malone",
+                "slug": "Post-malone",
+                "url": "https://genius.com/artists/Post-malone",
+                "iq": 16124
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/1421",
+                "header_image_url": "https://images.genius.com/4167280809fae642bf5093ead523a431.900x900x1.jpg",
+                "id": 1421,
+                "image_url": "https://images.genius.com/577393843e2fe24d9bcb1b6917b81772.1000x1000x1.png",
+                "index_character": "k",
+                "is_meme_verified": true,
+                "is_verified": true,
+                "name": "Kendrick Lamar",
+                "slug": "Kendrick-lamar",
+                "url": "https://genius.com/artists/Kendrick-lamar",
+                "iq": 60955
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/73910",
+                "header_image_url": "https://images.genius.com/1d64c0e97aa12457fa57d9e57bff9728.1000x333x1.jpg",
+                "id": 73910,
+                "image_url": "https://images.genius.com/538ee82e57b45daf13d57d82779a19c2.400x400x1.jpg",
+                "index_character": "h",
+                "is_meme_verified": false,
+                "is_verified": true,
+                "name": "Hozier",
+                "slug": "Hozier",
+                "url": "https://genius.com/artists/Hozier",
+                "iq": 2130
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/1554112",
+                "header_image_url": "https://images.genius.com/73b7e57f6b1502dd7baf86fe722a66dd.1000x165x1.jpg",
+                "id": 1554112,
+                "image_url": "https://images.genius.com/c90359bddf856c3e3acf638b96ab5393.951x951x1.png",
+                "index_character": "l",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "name": "LISA",
+                "slug": "Lisa",
+                "url": "https://genius.com/artists/Lisa"
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/228636",
+                "header_image_url": "https://images.genius.com/85deb0559ca06e3922a4a62b6c07e0d8.1000x333x1.jpg",
+                "id": 228636,
+                "image_url": "https://images.genius.com/0e0e33f7d22427d3b5a6792aed988cd5.400x400x1.jpg",
+                "index_character": "h",
+                "is_meme_verified": true,
+                "is_verified": true,
+                "name": "Halsey",
+                "slug": "Halsey",
+                "url": "https://genius.com/artists/Halsey",
+                "iq": 1900
+            }
+        },
+        {
+            "_type": "chart_item",
+            "type": "artist",
+            "item": {
+                "_type": "artist",
+                "api_path": "/artists/72",
+                "header_image_url": "https://images.genius.com/f860375e040d0478339ec6284a08a3a4.1000x750x1.webp",
+                "id": 72,
+                "image_url": "https://images.genius.com/fc6d82f73795869ec227be92fe09f665.640x640x1.jpg",
+                "index_character": "k",
+                "is_meme_verified": false,
+                "is_verified": false,
+                "name": "Kanye West",
+                "slug": "Kanye-west",
+                "url": "https://genius.com/artists/Kanye-west"
+            }
+        }
+    ],
+    "next_page": 2
+}

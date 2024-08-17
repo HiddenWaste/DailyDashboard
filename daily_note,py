@@ -8,11 +8,28 @@ import chord_generator # Import constructed key and chord generator
 import history_scrape # Import the history scraper
 
 # API KEYS
-WEATHER_API_KEY = "4b1a6ebf5a0e9f3e6197c542169d12eb" # OpenWeather API
-TODAY = datetime.today().strftime('%m-%d')
+WEATHER_API_KEY = "4b1a6ebf5a0e9f3e6197c542169d12eb"    # OpenWeather API
+STOCK_API_KEY = "TFKhbppB8Yt6X1pJVnxLvaHp_Yb477IB"      # Polygon.io API
+X_RAPIDAPI_KEY = "88d85341a3msh6a285814de5ffc0p10d2d5jsnd07b4d6f6f15" # RapidAPI Key
+
+
+def get_music_charts():
+    url = "https://genius-song-lyrics1.p.rapidapi.com/song/recommendations/"
+
+    querystring = {"id":"2396871"}
+
+    headers = {
+        "x-rapidapi-key": X_RAPIDAPI_KEY,
+        "x-rapidapi-host": "genius-song-lyrics1.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    print(response.json())
 
 # Get today's date
 today = datetime.today()
+TODAY = datetime.today().strftime('%m-%d')
 MONTH = today.strftime('%B')
 DAY = today.strftime('%d')
 
@@ -58,8 +75,7 @@ def create_markdown(data, weather_data, chord_progression):
     # Initialize Metadata
     md_content = f"---\ntitle: '{TODAY} Dashboard'\ndate: '{TODAY}'\ntags: ['Blogs']\n---\n\n"
 
-    date_str = datetime.now().strftime('%Y-%m-%d')
-    md_content += f"# Daily Dashboard for {date_str}\n\n"
+    md_content += f"# Daily Dashboard for {MONTH} {DAY}\n\n"
 
     if 'sf' in weather_data:
         weather_to_markdown = weather_data['sf']
@@ -80,7 +96,6 @@ def create_markdown(data, weather_data, chord_progression):
         md_content += f"> {data['quote']['content']} - {data['quote']['author']}\n\n"
         md_content += f"More on [{data['quote']['author']}](https://en.wikipedia.org/wiki/{data['quote']['author'].replace(' ', '_')})\n\n"
 
-    
     # Run the scrape for Today in History
     events, births, deaths = history_scrape.scrape_wikipedia_today(MONTH, DAY)
     history_content = history_scrape.create_history_content(events, births, deaths)
@@ -94,6 +109,10 @@ def create_markdown(data, weather_data, chord_progression):
         md_content += f"## Chord Progression\n"
         md_content += f"Key: {key} {scale_type.capitalize()}\n"
         md_content += f"Progression: {' - '.join(progression)}\n\n"
+
+    # Include the data as it is for dev and debug purposes
+    md_content += f"\n\n\n## Data\n"
+    md_content += f"```json\n{data}\n```\n"
 
     return md_content
 

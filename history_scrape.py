@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 
 KEYWORDS = {
     'physicist': 5,
@@ -86,9 +85,6 @@ def birth_sort(soup):
             if birth_section:
                 all_birth_entries.extend(birth_section.find_all('li'))  # Extract all `li` elements
 
-    # Debug print to check the number of entries found
-    print("Total number of birth entries found:", len(all_birth_entries))
-
     # Filtering and scoring BIRTHS
     filtered_births = []
     for birth in all_birth_entries:
@@ -101,8 +97,9 @@ def birth_sort(soup):
     # Sort by relevance score
     filtered_births.sort(reverse=True, key=lambda x: x[0])
 
-    # Final Debug print
-    print("Number of filtered births:", len(filtered_births))
+    # # Final Debug print
+    # print("Total number of birth entries found:", len(all_birth_entries))
+    # print("Number of filtered births:", len(filtered_births))
     
     return filtered_births
 
@@ -132,12 +129,11 @@ def death_sort(soup):
     # Sort by relevance score
     filtered_deaths.sort(reverse=True, key=lambda x: x[0])
 
-    # Debug print to check the number of entries found
-    print("Total number of death entries found:", len(all_death_entries))
-    print("Number of filtered deaths:", len(filtered_deaths))
+    # # Debug print to check the number of entries found
+    # print("Total number of death entries found:", len(all_death_entries))
+    # print("Number of filtered deaths:", len(filtered_deaths))
     
     return filtered_deaths
-
 
 def scrape_wikipedia_today(month, day):
     url = f"https://en.wikipedia.org/wiki/{month}_{day}"
@@ -154,7 +150,6 @@ def scrape_wikipedia_today(month, day):
     return event_list, birth_list, death_list
 
 def create_history_content(events, births, deaths):
-    # Create the Markdown Content
     markdown_content = f"# Today In History!!\n\n"
 
     markdown_content += "## Events\n\n"
@@ -170,10 +165,3 @@ def create_history_content(events, births, deaths):
         markdown_content += f"**{score}** - {death}\n\n"
 
     return markdown_content
-
-# # def main():
-# #     markdown_content = create_markdown_content()
-# #     print(markdown_content)
-
-# if __name__ == "__main__":
-#     main()
