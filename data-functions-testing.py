@@ -2,22 +2,25 @@ import requests
 import json
 import pandas as pd
 
-url = "https://genius-song-lyrics1.p.rapidapi.com/chart/artists/"
-
-querystring = {"id": "2396871"}	# ID to retrive artist chart from Genius API
-
+GENIUS_ARTIST_CHART_URL = "https://genius-song-lyrics1.p.rapidapi.com/chart/artists/"
+GENIUS_ARTIST_CHART_QUERYSTRING = {"id": "2396871"}	# ID to retrive artist chart from Genius API
 X_RAPIDAPI_KEY = "88d85341a3msh6a285814de5ffc0p10d2d5jsnd07b4d6f6f15"	# RapidAPI key Constant
 
-headers = {
-    "x-rapidapi-key": X_RAPIDAPI_KEY,	# RapidAPI key
-    "x-rapidapi-host": "genius-song-lyrics1.p.rapidapi.com"					# RapidAPI host (Genius API)
-}
+def get_artist_chart(url, querystring):
+    headers = {
+        "x-rapidapi-key": X_RAPIDAPI_KEY,	# RapidAPI key
+        "x-rapidapi-host": "genius-song-lyrics1.p.rapidapi.com"					# RapidAPI host (Genius API)
+    }
 
-response = requests.get(url, headers=headers, params=querystring)
-response_json = response.json()
+    response = requests.get(url, headers=headers, params=querystring)
+    response_json = response.json()
+    return response_json
+
+# Get the artist chart from the Genius API
+genius_artist_chart = get_artist_chart(GENIUS_ARTIST_CHART_URL, GENIUS_ARTIST_CHART_QUERYSTRING)
 
 # Print the entire response JSON for debugging
-print(json.dumps(response_json, indent=4))
+print(json.dumps(genius_artist_chart, indent=4))
 
 # Initialize an empty list to store the filtered artist information
 artist_list = []
@@ -26,7 +29,7 @@ artist_list = []
 artists_to_filter = {"Genius Romanizations", "Genius English Translations", "Genius Traducciones al Español"}
 
 # Extract artist details from the response
-for chart_item in response_json.get('chart_items', []):
+for chart_item in genius_artist_chart.get('chart_items', []):
     artist = chart_item.get('item', {})
     
     artist_info = {
