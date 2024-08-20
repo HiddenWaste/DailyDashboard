@@ -1,12 +1,26 @@
 import random
-
-# Import midi library
-from midiutil import MIDIFile
+from midiutil import MIDIFile # Midi Library for creating midi files
 
 # Global Variables for constructing key and chord progressions
 notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 major_intervals = [2, 2, 1, 2, 2, 2]  # Whole, Whole, Half, Whole, Whole, Whole
 minor_intervals = [2, 1, 2, 2, 1, 2]  # Whole, Half, Whole, Whole, Half, Whole
+
+# Define the Root Notes
+root_notes = {
+    'C': 60,
+    'C#': 61,
+    'D': 62,
+    'D#': 63,
+    'E': 64,
+    'F': 65,
+    'F#': 66,
+    'G': 67,
+    'G#': 68,
+    'A': 69,
+    'A#': 70,
+    'B': 71
+}
 
 # presets for weird modes
 # dorian_intervals = [2, 1, 2, 2, 2, 1]  # Whole, Half, Whole, Whole, Whole, Half
@@ -147,6 +161,8 @@ def generate_supercollider_script(key, scale_type, progression_pattern):
 
     return supercollider_content
 
+
+
 def generate_midi_file(key, scale_type, progression_pattern):
     # Create a MIDIFile Object
     midi = MIDIFile(1)  # Just one track for now
@@ -157,42 +173,7 @@ def generate_midi_file(key, scale_type, progression_pattern):
     midi.addTrackName(track, time, "Sample Track")
     midi.addTempo(track, time, 120)
 
-    # Define the Chord Progression
-    progression = generate_chord_progression(key, scale_type, progression_pattern)[2]
-
-    # Define the Chord Length
-    chord_length = 2
-
-    # Define the Chord Notes
-    chord_notes = {
-        'maj': [0, 4, 7],
-        'min': [0, 3, 7],
-        'dim': [0, 3, 6]
-    }
-
-    # Define the Chord Root Notes
-    root_notes = {
-        'C': 60,
-        'C#': 61,
-        'D': 62,
-        'D#': 63,
-        'E': 64,
-        'F': 65,
-        'F#': 66,
-        'G': 67,
-        'G#': 68,
-        'A': 69,
-        'A#': 70,
-        'B': 71
-    }
-
-    # Define the Chord Progression Notes
-    progression_notes = []
-    for chord in progression:
-        root_note = root_notes[chord[:1]]
-        chord_type = chord[1:]
-        chord_note = [root_note + note for note in chord_notes[chord_type]]
-        progression_notes.append(chord_note)
+    
 
     # Add the Chord Progression to the MIDI File
     for i, notes in enumerate(progression_notes):
@@ -205,31 +186,34 @@ def generate_midi_file(key, scale_type, progression_pattern):
 
     return "chord_progression.mid"
 
-# Main function to generate a chord progression and supercollider script
-def main():
-    key, scale_type, progression, progression_pattern = generate_chord_progression()
+# ------------------------------------------------------------------------------------------------
 
-    # Convert the progression to degrees (e.g., ['1', '4', '5', '1'])
-    degrees = [progression_pattern.index(chord[:1]) + 1 for chord in progression]
 
-    supercollider_script = generate_supercollider_script(key, scale_type, degrees)
+# # Main function to generate a chord progression and supercollider script
+# def main():
+#     key, scale_type, progression, progression_pattern = generate_chord_progression()
 
-    # Save the content of the supercollider script to an scd file
-    with open("chord_progression.scd", "w") as f:
-        f.write(supercollider_script)
+#     print(f"Key: {key}")
+#     print(f"Scale Type: {scale_type}")
+#     print(f"Progression: {progression}")
+#     print(f"Progression Pattern: {progression_pattern}")
+#     print("\n")
 
-    # Generate a MIDI file
-    midi_file = generate_midi_file(key, scale_type, progression_pattern)
-    with open("chord_progression.mid", "wb") as f:
-        f.write(midi_file)
+#     # supercollider_script = generate_supercollider_script(key, scale_type, degrees)
 
-    print(f"Key: {key}")
-    print(f"Scale Type: {scale_type}")
-    print(f"Progression: {progression}")
-    print("\n")
+#     # # Save the content of the supercollider script to an scd file
+#     # with open("chord_progression.scd", "w") as f:
+#     #     f.write(supercollider_script)
 
-    print("Supercollider Script:")
-    print(supercollider_script)
+#     # # Generate a MIDI file
+#     midi_file = generate_midi_file(key, scale_type, progression_pattern)
+#     with open("chord_progression.mid", "wb") as f:
+#         f.write(midi_file)
 
-if __name__ == "__main__":
-    main()
+#     # print("Supercollider Script:")
+#     # print(supercollider_script)
+
+#     # print("MIDI File Generated: chord_progression.mid")
+
+# if __name__ == "__main__":
+#     main()
