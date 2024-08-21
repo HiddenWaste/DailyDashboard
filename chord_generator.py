@@ -2,7 +2,7 @@ import random
 from midiutil import MIDIFile # Midi Library for creating midi files
 
 # Global Variables for constructing key and chord progressions
-notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 INTERVALS = {
     'major': [2, 2, 1, 2, 2, 2],        # Whole, Whole, Half, Whole, Whole, Whole, Half
@@ -49,10 +49,10 @@ def generate_scale(key, scale_type):
     
     # Create the scale based on the key and intervals
     scale = [key]                       # Set the tonic note chosen as the Scale name
-    start_index = notes.index(key)      # Start an index pointer at the key's point in the notes array
+    start_index = NOTES.index(key)      # Start an index pointer at the key's point in the notes array
     for interval in intervals:                                  # For Each interval in scale tyle
-        start_index = (start_index + interval) % len(notes)     # Iterate by interval step
-        scale.append(notes[start_index])                        # Build the Actual Scale
+        start_index = (start_index + interval) % len(NOTES)     # Iterate by interval step
+        scale.append(NOTES[start_index])                        # Build the Actual Scale
     return scale
 
 # Create the chords for the scale and to pick the progression out
@@ -80,7 +80,7 @@ def generate_chords(scale, scale_type):
 def generate_chord_progression(key=None, scale_type=None, progression_pattern=None):
 
     if not key:
-        key = random.choice(notes)  # Pick a random tonic note
+        key = random.choice(NOTES)  # Pick a random tonic note
 
     if not scale_type:
         scale_type = random.choice(['major', 'minor'])  # Pick a random scale type
@@ -148,35 +148,54 @@ def generate_supercollider_script(key, scale_type, progression_pattern):
         \\amp, 0.2,                                  // Amplitude of each note
         \\degree, Pseq([ {degree_array} ], inf),     // A Pseq that cycles through the progression's notes (degrees) the inf means it will loop forever
         \\scale, Scale.{scale_type},               // The scale to use
-        \\root, {notes.index(key)},                             
+        \\root, {NOTES.index(key)},                             
         \\octave, 4
     ).play;
     """
 
     # Append to supercollider content
-    supercollider_content += synthdef + '\n'    # Add the chosen synthdef
-    supercollider_content += pbind + '\n'       # Add the Pbind
+    supercollider_content += synthdef + '\n'                    # Add the chosen synthdef
+    supercollider_content += pbind + '\n' + 'Server.killAll'       # Add the Pbind and killswitch
 
     return supercollider_content
 
 
 
 def generate_midi_file(key, scale_type, progression_pattern):
+
     # Create a MIDIFile Object
     midi = MIDIFile(1)  # Just one track for now
 
     # Add a track name and tempo. The first argument to addTrackName and addTempo is the time to write the event.
     track = 0
     time = 0
-    midi.addTrackName(track, time, "Sample Track")
+    midi.addTrackName(track, time, "Generated Midi File")
     midi.addTempo(track, time, 120)
 
-    
+    # Generate the scale and chords
+    scale = generate_scale(key, scale_type)
+    chords = generate_chords(scale, scale_type)
+    degrees = [int(degree) for degree in progression_pattern]  # Convert progression pattern to degrees for MIDI
 
-    # Add the Chord Progression to the MIDI File
-    for i, notes in enumerate(progression_notes):
-        for note in notes:
-            midi.addNote(track, 0, note, time + i * chord_length, chord_length, 100)
+    # Use the degree to pick out the notes from the scale
+    notes = [scale[degree-1] for degree in degrees]
+
+    # Use established note dictionary to get the midicps
+    notes = [root_notes[note] for note in notes]
+
+    # Convert notes to integers
+    notes = [int(note) for note in notes]
+    
+    # # Debugging Prints
+    # print(f'Scale: {scale}')
+    # print(f'Chords: {chords}')    
+    # print(f'Progression: {progression_pattern}')
+    # print(f'Degrees: {degrees}')
+    # print(f'Notes: {notes}')
+
+    # Add the notes to the MIDI file
+    for i, note in enumerate(notes):
+        midi.addNote(track, 0, note, time + i, 0.5, 100)  # Add the note to the MIDI file
 
     # Save the MIDI File
     with open("chord_progression.mid", "wb") as f:
@@ -187,38 +206,37 @@ def generate_midi_file(key, scale_type, progression_pattern):
 # ------------------------------------------------------------------------------------------------
 
 
-# # Main function to generate a chord progression and supercollider script
-def main():
-    key, scale_type, progression, progression_pattern = generate_chord_progression()
+# # # Main function to generate a chord progression and supercollider script
+# def main():
+#     key, scale_type, progression, progression_pattern = generate_chord_progression()
 
-    degrees = progression_pattern  # Initialize degrees variable
+#     degrees = progression_pattern  # Initialize degrees variable
 
-    supercollider_script = generate_supercollider_script(key, scale_type, degrees)
+#     supercollider_script = generate_supercollider_script(key, scale_type, degrees)
 
-    # Save the content of the supercollider script to an scd file
-    with open("chord_progression.scd", "w") as f:
-        f.write(supercollider_script)
+#     # Save the content of the supercollider script to an scd file
+#     with open("chord_progression.scd", "w") as f:
+#         f.write(supercollider_script)
 
-    # # Generate a MIDI file
-    # midi_file = generate_midi_file(key, scale_type, progression_pattern)
-    # with open("chord_progression.mid", "wb") as f:
-    #     f.write(midi_file)
+#     # # Generate a MIDI file
+#     midi_file = generate_midi_file(key, scale_type, progression_pattern)
+#     print(f'MIDI File Generated: {midi_file}')
 
-    # ------------------------------------------------------------------------------------------------
+#     # ------------------------------------------------------------------------------------------------
 
-    # Debugging Prints    
+#     # Debugging Prints    
     
-    # Chord Generation part
-    # print(f"Key: {key}")
-    # print(f"Scale Type: {scale_type}")
-    # print(f"Progression: {progression}")
-    # print(f"Progression Pattern: {progression_pattern}")
-    # print("\n")
+#     # Chord Generation part
+#     # print(f"Key: {key}")
+#     # print(f"Scale Type: {scale_type}")
+#     # print(f"Progression: {progression}")
+#     # print(f"Progression Pattern: {progression_pattern}")
+#     # print("\n")
 
-    # Midi and Supercollider Generation Parts
-    # print("MIDI File Generated: chord_progression.mid")
-    # print("Supercollider Script:")
-    # print(supercollider_script)
+#     # Midi and Supercollider Generation Parts
+#     # print("MIDI File Generated: chord_progression.mid")
+#     # print("Supercollider Script:")
+#     # print(supercollider_script)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
