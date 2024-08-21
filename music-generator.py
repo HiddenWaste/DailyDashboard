@@ -9,6 +9,25 @@
 
         - (Later) Create a sort of 'supercollider decoder' that could parse the supercollider code to
                 test the sound prior to generating either a midi file or a supercollider script
+
+    Initial Supercollider Decoder Idea Pseudo Code:
+
+    def supercollider_decoder(supercollider_script):
+        # Take the script either line by line or in chunks
+                # If you can take chunks and send them to supercollider to play, that would be best, run a synthdef and then the pbind
+                # Maybe split by semicolon as that is what ends each command?
+        # Send the script to supercollider to play
+            # If it plays, then the script is good
+
+    Initial Issues/Concerns:
+        - The feasibility of coding this to a useable state with python and tkinter
+        - How to even code this
+        - Would using Javascript to create a web app for this I can display directly on my gatsby site for this be better?
+            - With JavaScript and my Gatsby Site, would I be able to make supercollider sounds and sound effects play throughout my site?
+        - What is the upper limit to this on python? 
+            - GUI design?
+            - Processing Speed?
+            - Ease of Use?
 """
 
 import tkinter as tk   # Used for a GUI
@@ -27,7 +46,6 @@ def main():
 
     # Make the window never close
     window.mainloop()
-
 
 if __name__ == "__main__":
     main()
