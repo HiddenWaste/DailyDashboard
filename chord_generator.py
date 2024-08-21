@@ -112,6 +112,29 @@ def generate_chord_progression(key=None, scale_type=None, progression_pattern=No
                - Maybe create different Pbind Presets?
         - Save the script to a .scd file
 
+    The synthdefs are pulled from a markdown file I've created to hold these presets. The structure of each is like so:
+    ## Chord
+    
+    SynthDef.new(\\chord, {
+        arg freq = 440, amp = 0.5, dur = 0.5;
+        var env, sig;
+        env = EnvGen.kr(Env.perc(0.01, 0.1), doneAction: 2);
+        sig = SinOsc.ar(freq, 0, amp) * env;
+        Out.ar(0, sig);
+    }).add;
+
+    ## Bass
+
+    SynthDef.new(\\bass, {
+        arg freq = 220, amp = 0.3, dur = 1.0;
+        var env, sig;
+        env = EnvGen.kr(Env.perc(0.01, 0.2), doneAction: 2);
+        sig = Saw.ar(freq, 0, amp) * env;
+        Out.ar(0, sig);
+    }).add;
+
+    
+
 
     Midi File Generator Ideas:
         - Generate a midi file with the chord progression
@@ -122,22 +145,30 @@ def generate_chord_progression(key=None, scale_type=None, progression_pattern=No
     (Later) Make a gui or paramters to call from other py files to create these, or at least the content for them as generation?
         - Unsure 
 """
+# ------------------------------------------------------------------------------------------------
+
 
 # Supercollider Script Generator
 def generate_supercollider_script(key, scale_type, progression_pattern):
-    # Initialize SuperCollider Script
-    supercollider_content = "\ns.boot;\n"
+    supercollider_content = "\ns.boot;\n\n"  # Initialize the SuperCollider content
 
-    # Define the SynthDef for the Chord Synth
-    synthdef = """
-    SynthDef.new(\\chord, {
-        arg freq = 440, amp = 0.5, dur = 0.5;
-        var env, sig;
-        env = EnvGen.kr(Env.perc(0.01, 0.1), doneAction: 2);
-        sig = SinOsc.ar(freq, 0, amp) * env;
-        Out.ar(0, sig);
-    }).add;
-    """
+    # Choose a synthdef from the data file (markdown)
+    # Read the SynthDefs from the markdown file
+    with open("synthdefs.scd", "r") as f:
+        synthdefs = f.read()
+    synthdefs = synthdefs.split('\n\n')     # Split synthdefs by 2 newlines
+    synthdef = random.choice(synthdefs)     # Randomly choose one of the synthdefs
+    # print(f'Full Synthdef:\n {synthdef}\n') # Debugging
+
+    # Extract the synthdef name to call in the Pbind
+    #   First line Example:  SynthDef.new(\\bass, {
+    #   Need to skip first 15 characters, and then until the first comma
+    chosen_synthdef = synthdef[15:synthdef.index(',')]
+
+    print(f'Chosen Synthdef:\n {chosen_synthdef}') # Debugging
+
+    # Now Create a Pbind to play the chord progression on the chosen synth
+    #       Seems to be the most difficult portion
 
     # Convert progression pattern to degrees for SuperCollider
     degree_array = ', '.join(progression_pattern)  # Keep degrees as string
@@ -145,19 +176,19 @@ def generate_supercollider_script(key, scale_type, progression_pattern):
     # Define the Pbind for the Chord Progression
     pbind = f"""
     Pbind(
-        \\instrument, \\chord,
-        \\dur, 0.5,
-        \\amp, 0.5,
-        \\degree, Pseq([ {degree_array} ], inf),
-        \\scale, Scale.{scale_type.capitalize}(), 
-        \\root, {notes.index(key)},
+        \\instrument, \{chosen_synthdef},           // Use the chosen synth
+        \\dur, 0.5,                                  // Duration of each note
+        \\amp, 0.5,                                  // Amplitude of each note
+        \\degree, Pseq([ {degree_array} ], inf),     // A Pseq that cycles through the progression's notes (degrees) the inf means it will loop forever
+        \\scale, Scale.{scale_type},               // The scale to use
+        \\root, {notes.index(key)},                             
         \\octave, 4
     ).play;
     """
 
     # Append to supercollider content
-    supercollider_content += synthdef
-    supercollider_content += pbind
+    supercollider_content += synthdef + '\n'    # Add the chosen synthdef
+    supercollider_content += pbind + '\n'       # Add the Pbind
 
     return supercollider_content
 
@@ -190,30 +221,32 @@ def generate_midi_file(key, scale_type, progression_pattern):
 
 
 # # Main function to generate a chord progression and supercollider script
-# def main():
-#     key, scale_type, progression, progression_pattern = generate_chord_progression()
+def main():
+    key, scale_type, progression, progression_pattern = generate_chord_progression()
 
-#     print(f"Key: {key}")
-#     print(f"Scale Type: {scale_type}")
-#     print(f"Progression: {progression}")
-#     print(f"Progression Pattern: {progression_pattern}")
-#     print("\n")
+    print(f"Key: {key}")
+    print(f"Scale Type: {scale_type}")
+    print(f"Progression: {progression}")
+    print(f"Progression Pattern: {progression_pattern}")
+    print("\n")
 
-#     # supercollider_script = generate_supercollider_script(key, scale_type, degrees)
+    degrees = progression_pattern  # Initialize degrees variable
 
-#     # # Save the content of the supercollider script to an scd file
-#     # with open("chord_progression.scd", "w") as f:
-#     #     f.write(supercollider_script)
+    supercollider_script = generate_supercollider_script(key, scale_type, degrees)
 
-#     # # Generate a MIDI file
-#     midi_file = generate_midi_file(key, scale_type, progression_pattern)
-#     with open("chord_progression.mid", "wb") as f:
-#         f.write(midi_file)
+    # Save the content of the supercollider script to an scd file
+    with open("chord_progression.scd", "w") as f:
+        f.write(supercollider_script)
 
-#     # print("Supercollider Script:")
-#     # print(supercollider_script)
+    # # Generate a MIDI file
+    # midi_file = generate_midi_file(key, scale_type, progression_pattern)
+    # with open("chord_progression.mid", "wb") as f:
+    #     f.write(midi_file)
+
+    print("Supercollider Script:")
+    print(supercollider_script)
 
 #     # print("MIDI File Generated: chord_progression.mid")
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

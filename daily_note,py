@@ -35,7 +35,6 @@ DAY = today.strftime('%d')
 
 
 # API ENDPOINTS (URLS)
-# Weather API
 WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 
 # News Related API (Placeholder)
@@ -51,17 +50,7 @@ GENIUS_CHARTS = {
     'albums': GENIUS_ALBUM_CHART_URL
 }
 
-# List of authors formatted for the quote api slugs
-#   This will help me keep the quotes towards literature I am familiar with and am interested in seeing day to day
-QUOTE_AUTHORS = [
-    'ralph-waldo-emerson',
-    'henry-david-thoreau',
-    'marcus-aurelius',
-    'nelson-mandela',
-    'carl-jung',
-    'carl-sagan',
-    'albert-einstein',
-]
+
 
 # Get Weather function for a location
 def get_weather(location):
@@ -92,8 +81,9 @@ def get_quote():
 def create_markdown(data, weather_data, chord_progression):
 
     # Initialize Metadata
-    md_content = f"---\ntitle: '{TODAY} Dashboard'\ndate: '{TODAY}'\ntags: ['Blogs']\n---\n\n"  # Front Matter
-    md_content += f"# Daily Dashboard for {MONTH} {DAY}\n\n"                                    # Title
+    md_content = f"---\ntitle: '{TODAY} Dashboard'\ndate: '{TODAY}'\ntags: ['Blogs']\n---\n\n"
+
+    md_content += f"# Daily Dashboard for {MONTH} {DAY}\n\n"
 
     if 'sf' in weather_data:
         weather_to_markdown = weather_data['sf']
@@ -123,20 +113,14 @@ def create_markdown(data, weather_data, chord_progression):
 
     # Include the chord progression
     if chord_progression:
-        key, scale_type, progression, progression_pattern = chord_generator.generate_chord_progression()
+        key, scale_type, progression = chord_progression
         md_content += f"## Chord Progression\n"
         md_content += f"Key: {key} {scale_type.capitalize()}\n"
-        md_content += f"Progression: {' - '.join(progression)}\n"
-        md_content += f"Progression Pattern: {progression_pattern}\n\n"
+        md_content += f"Progression: {' - '.join(progression)}\n\n"
 
     # Include the data as it is for dev and debug purposes
     md_content += f"\n\n\n## Data\n"
     md_content += f"```json\n{data}\n```\n"
-
-    # Unicode Error Checking
-        # Make sure all characters are able to be encoded (has caused issues before)
-    if md_content:
-        md_content = md_content.encode('ascii', 'ignore').decode('ascii')
 
     return md_content
 
