@@ -29,6 +29,14 @@ root_notes = {
     'B': 71
 }
 
+# Newest idea: Create a class to make a sort of 'generator' object 
+#     That will be able to hold an instance of all this theory generation
+#      Which would make it easier to call and manipulate!
+# Initialize the Class
+
+
+
+
 
 # Presets for possible progressions
 progression_patterns = [['1', '4', '5', '1'],   # Very Basic Pop Progression

@@ -113,7 +113,7 @@ def create_markdown(data, weather_data, chord_progression):
 
     # Include the chord progression
     if chord_progression:
-        key, scale_type, progression = chord_progression
+        key, scale_type, progression, progression_pattern = chord_progression
         md_content += f"## Chord Progression\n"
         md_content += f"Key: {key} {scale_type.capitalize()}\n"
         md_content += f"Progression: {' - '.join(progression)}\n\n"
